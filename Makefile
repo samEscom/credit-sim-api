@@ -21,6 +21,7 @@ lint-fix:
 
 
 run-local:
+	@docker compose up -d db_dev;
 	@uv run uvicorn main:app --reload
 
 .PHONY: run-local install-local lint lint-fix setup
