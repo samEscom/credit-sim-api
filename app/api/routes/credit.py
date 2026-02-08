@@ -2,9 +2,9 @@ from fastapi import APIRouter, BackgroundTasks, Depends
 
 from app.application.use_case.credit.simulate import SimulateCreditUseCase
 from app.infrastructure.clients.audit import RiskAuditClient
-from app.api.schemas.response import SimulateCreditResponse
+from app.api.schemas.response import SimulateCreditResponse, SimulateResponse
 from app.api.schemas.request import SimulateCreditRequest
-from app.api.mappers.credit import map_amortization_rows
+from app.api.mappers.credit import map_amortization_rows, map_simulation_rows
 from sqlalchemy.orm import Session
 from app.infrastructure.database.session import get_db
 from app.domain.repository.credit.simulation import SimulationRepository
@@ -22,7 +22,7 @@ def simulate_credit(
 
     risk_audit = RiskAuditClient(background_tasks)
     repository = SimulationRepository(db)
-    use_case = SimulateCreditUseCase(risk_audit, repository)
+    use_case = SimulateCreditUseCase(repository, risk_audit)
 
     result = use_case.execute(
         amount=request.amount,
@@ -33,3 +33,14 @@ def simulate_credit(
     response = map_amortization_rows(result)
 
     return SimulateCreditResponse(schedule=response)
+
+
+@router.get("/simulate/history", response_model=list[SimulateResponse])
+def simulate_credit_history(db: Session = Depends(get_db)):
+    repository = SimulationRepository(db)
+
+    use_case = SimulateCreditUseCase(repository)
+
+    result = use_case.find_all()
+
+    return map_simulation_rows(result)

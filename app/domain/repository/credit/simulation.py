@@ -18,3 +18,17 @@ class SimulationRepository(SimulationRepositoryBase):
         )
         self.db.add(model)
         self.db.commit()
+
+    def find_all(self) -> list[SimulationModel]:
+        return self.db.query(SimulationModel).all()
+
+    def find_by_id(self, simulation_id: str) -> SimulationModel:
+        return (
+            self.db.query(SimulationModel)
+            .filter(SimulationModel.id == simulation_id)
+            .first()
+        )
+
+    def update(self, model: SimulationModel) -> None:
+        self.db.merge(model)
+        self.db.commit()

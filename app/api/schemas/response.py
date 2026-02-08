@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List
+from datetime import datetime
 
 
 class HealthResponse(BaseModel):
@@ -16,3 +17,13 @@ class AmortizationRowResponse(BaseModel):
 
 class SimulateCreditResponse(BaseModel):
     schedule: List[AmortizationRowResponse]
+
+
+class SimulateResponse(BaseModel):
+    id: str
+    amount: float
+    annual_rate: float
+    months: int
+    risk_score: str
+    created_at: datetime
+    updated_at: datetime

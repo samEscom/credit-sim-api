@@ -5,5 +5,7 @@ CREATE TABLE credit_simulation (
     amount NUMERIC NOT NULL,
     annual_rate NUMERIC NOT NULL,
     months INTEGER NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    risk_score VARCHAR(20) NULL,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP NULL
 );
