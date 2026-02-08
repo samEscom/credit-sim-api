@@ -4,7 +4,6 @@ import time
 from fastapi import BackgroundTasks
 from app.application.ports.risk_audit import RiskAuditPort
 
-import uuid
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,19 +13,27 @@ class RiskAuditClient(RiskAuditPort):
     def __init__(self, background_tasks: BackgroundTasks):
         self.background_tasks = background_tasks
 
-    def execute(self, simulation_id: str) -> str | None:
+    def execute(self, simulation_id: str, on_complete=None) -> None:
+        self.background_tasks.add_task(
+            self._notify_and_callback,
+            simulation_id,
+            on_complete,
+        )
+
+    @staticmethod
+    def _notify_and_callback(simulation_id: str, on_complete=None) -> None:
         try:
-            audit_id = self.background_tasks.add_task(
-                self._notify,
-                simulation_id,
-            )
-            return audit_id
-        except Exception:
+            result = RiskAuditClient._notify(simulation_id)
+            if on_complete:
+                on_complete(simulation_id, result)
+        except Exception as e:
             logger.error(
-                "Risk audit failed (simulation_id=%s)",
+                "Risk audit failed (simulation_id=%s): %s",
                 simulation_id,
+                str(e),
             )
-            return None
+            if on_complete:
+                on_complete(simulation_id, "FAILED")
 
     @staticmethod
     def _notify(simulation_id: str) -> str:
@@ -45,4 +52,4 @@ class RiskAuditClient(RiskAuditPort):
             simulation_id,
         )
 
-        return str(uuid.uuid4())
+        return "COMPLETED"

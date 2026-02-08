@@ -14,4 +14,6 @@ class SimulationModel(Base):
     amount: Mapped[float] = mapped_column(Float, nullable=False)
     annual_rate: Mapped[float] = mapped_column(Float, nullable=False)
     months: Mapped[int] = mapped_column(Integer, nullable=False)
+    risk_score: Mapped[str] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, nullable=True)
