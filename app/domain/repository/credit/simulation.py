@@ -20,7 +20,11 @@ class SimulationRepository(SimulationRepositoryBase):
         self.db.commit()
 
     def find_all(self) -> list[SimulationModel]:
-        return self.db.query(SimulationModel).all()
+        return (
+            self.db.query(SimulationModel)
+            .order_by(SimulationModel.created_at.desc())
+            .all()
+        )
 
     def find_by_id(self, simulation_id: str) -> SimulationModel:
         return (
