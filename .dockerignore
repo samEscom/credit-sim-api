@@ -1,0 +1,10 @@
+.venv
+.git
+__pycache__
+*.pyc
+.env
+.python-version
+.ruff_cache
+# Exclude potential build artifacts
+dist/
+build/
