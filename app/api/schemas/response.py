@@ -16,6 +16,7 @@ class AmortizationRowResponse(BaseModel):
 
 
 class SimulateCreditResponse(BaseModel):
+    simulation_id: str
     schedule: List[AmortizationRowResponse]
 
 

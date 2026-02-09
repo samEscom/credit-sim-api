@@ -2,6 +2,7 @@ import uuid
 
 from app.domain.service.credit.amortization import AmortizationService
 from app.application.ports.risk_audit import RiskAuditPort
+from app.domain.entities.credit import AmortizationRow
 from app.domain.repository.credit.simulation import SimulationRepositoryBase
 from app.domain.entities.credit import Simulation
 from datetime import datetime
@@ -21,7 +22,7 @@ class SimulateCreditUseCase:
         amount: float,
         annual_rate: float,
         months: int,
-    ):
+    ) -> tuple[str, list[AmortizationRow]]:
         simulation_id = str(uuid.uuid4())
 
         if self.risk_audit:
@@ -44,7 +45,7 @@ class SimulateCreditUseCase:
 
         self.simulation_repository.save(simulation)
 
-        return schedule
+        return simulation_id, schedule
 
     def find_all(self):
         return self.simulation_repository.find_all()

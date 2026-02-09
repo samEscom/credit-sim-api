@@ -1,14 +1,5 @@
-from dataclasses import dataclass
 from typing import List
-
-
-@dataclass
-class AmortizationRow:
-    month: int
-    payment: float
-    principal: float
-    interest: float
-    remaining_balance: float
+from app.domain.entities.credit import AmortizationRow
 
 
 class AmortizationService:
