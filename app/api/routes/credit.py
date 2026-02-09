@@ -24,7 +24,7 @@ def simulate_credit(
     repository = SimulationRepository(db)
     use_case = SimulateCreditUseCase(repository, risk_audit)
 
-    result = use_case.execute(
+    simulation_id, result = use_case.execute(
         amount=request.amount,
         annual_rate=request.annual_rate,
         months=request.months,
@@ -32,7 +32,7 @@ def simulate_credit(
 
     response = map_amortization_rows(result)
 
-    return SimulateCreditResponse(schedule=response)
+    return SimulateCreditResponse(simulation_id=simulation_id, schedule=response)
 
 
 @router.get("/simulate/{id}", response_model=SimulateResponse)

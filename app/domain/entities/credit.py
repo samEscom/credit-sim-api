@@ -9,3 +9,12 @@ class Simulation:
     annual_rate: float
     months: int
     created_at: datetime
+
+
+@dataclass
+class AmortizationRow:
+    month: int
+    payment: float
+    principal: float
+    interest: float
+    remaining_balance: float
