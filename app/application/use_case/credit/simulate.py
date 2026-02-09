@@ -49,6 +49,9 @@ class SimulateCreditUseCase:
     def find_all(self):
         return self.simulation_repository.find_all()
 
+    def find_by_id(self, simulation_id: str):
+        return self.simulation_repository.find_by_id(simulation_id)
+
     def update_risk_score(self, simulation_id: str, risk_score: str):
         simulation = self.simulation_repository.find_by_id(simulation_id)
         if simulation:
