@@ -35,14 +35,6 @@ def simulate_credit(
     return SimulateCreditResponse(simulation_id=simulation_id, schedule=response)
 
 
-@router.get("/simulate/{id}", response_model=SimulateResponse)
-def simulate_credit_by_id(id: str, db: Session = Depends(get_db)):
-    repository = SimulationRepository(db)
-    use_case = SimulateCreditUseCase(repository)
-    result = use_case.find_by_id(id)
-    return result
-
-
 @router.get("/simulate/history", response_model=list[SimulateResponse])
 def simulate_credit_history(db: Session = Depends(get_db)):
     repository = SimulationRepository(db)
@@ -52,3 +44,11 @@ def simulate_credit_history(db: Session = Depends(get_db)):
     result = use_case.find_all()
 
     return map_simulation_rows(result)
+
+
+@router.get("/simulate/{id}", response_model=SimulateResponse)
+def simulate_credit_by_id(id: str, db: Session = Depends(get_db)):
+    repository = SimulationRepository(db)
+    use_case = SimulateCreditUseCase(repository)
+    result = use_case.find_by_id(id)
+    return result
