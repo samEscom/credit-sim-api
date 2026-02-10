@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.config.settings import Settings
+from app.config.settings import AppSettings
 
 
 def setup_cors(app: FastAPI):
-    settings = Settings()
+    settings = AppSettings()
 
     # Dev origins are hardcoded as they are safe for local development
     origins = [
