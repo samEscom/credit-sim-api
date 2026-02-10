@@ -1,8 +1,9 @@
 from pydantic_settings import BaseSettings
 
 
-class DBSettings(BaseSettings):
+class Settings(BaseSettings):
     env: str = "dev"
+    ui_url: str = ""
 
     postgres_db: str
     postgres_user: str
@@ -21,5 +22,4 @@ class DBSettings(BaseSettings):
             f"{self.postgres_db}"
         )
 
-    class Config:
-        env_file = ".env"
+    model_config = {"env_file": ".env", "extra": "ignore"}
