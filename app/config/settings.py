@@ -17,6 +17,7 @@ class DBSettings(BaseSettings):
             f"{self.postgres_host}:"
             f"{self.postgres_port}/"
             f"{self.postgres_db}"
+            "?sslmode=require"
         )
 
     model_config = {"env_file": ".env", "extra": "ignore"}

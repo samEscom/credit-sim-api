@@ -2,7 +2,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from app.infrastructure.database.engine import get_engine
 
 
-_session = None
+_SessionLocal = None
 
 
 def get_session():
