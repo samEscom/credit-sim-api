@@ -1,7 +1,6 @@
 SHELL=/bin/bash
 PATH := .venv/bin:$(PATH)
 export TEST?=./tests
-export ENV?=dev
 IMAGE_NAME=creditsim-api
 
 
