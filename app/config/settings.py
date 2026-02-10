@@ -1,22 +1,19 @@
 import os
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from dotenv import load_dotenv
+
+# Manual load of .env for local development
+if os.path.exists(".env"):
+    load_dotenv()
 
 
-class BaseAppSettings(BaseSettings):
-    env: str = "local"
-    model_config = SettingsConfigDict(
-        env_file=".env" if os.path.exists(".env") else None,
-        env_prefix="",
-        extra="ignore",
-    )
-
-
-class DBSettings(BaseAppSettings):
-    postgres_db: str
-    postgres_user: str
-    postgres_password: str
-    postgres_host: str
-    postgres_port: int
+class DBSettings:
+    def __init__(self):
+        self.env = os.getenv("ENV", "local")
+        self.postgres_db = os.getenv("POSTGRES_DB")
+        self.postgres_user = os.getenv("POSTGRES_USER")
+        self.postgres_password = os.getenv("POSTGRES_PASSWORD")
+        self.postgres_host = os.getenv("POSTGRES_HOST")
+        self.postgres_port = os.getenv("POSTGRES_PORT", "5432")
 
     @property
     def database_url(self) -> str:
@@ -33,5 +30,7 @@ class DBSettings(BaseAppSettings):
         return url
 
 
-class AppSettings(BaseAppSettings):
-    ui_url: str = ""
+class AppSettings:
+    def __init__(self):
+        self.env = os.getenv("ENV", "local")
+        self.ui_url = os.getenv("UI_URL", "")
