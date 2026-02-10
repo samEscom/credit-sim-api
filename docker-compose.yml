@@ -13,7 +13,7 @@ services:
       - ./deploy/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
-  db-testing:
+  db_testing:
     build:
       context: .
       dockerfile: deploy/db/Dockerfile
@@ -24,16 +24,23 @@ services:
       - ./deploy/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5433:5432
-  app-dev:
+  app_dev:
     build:
       context: .
       dockerfile: deploy/dev/Dockerfile
     volumes:
       - .:/app
+      - /app/.venv
     ports:
       - 8000:8000
     environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_HOST=${POSTGRES_HOST}
       - ENV=${ENV}
+      - UI_URL=${UI_URL}
     depends_on:
       - db_dev
   test:
@@ -47,5 +54,6 @@ services:
     command: sh -c "python -B -m pytest -l --color=yes --cov=core_app --cov-config=./tests/.coveragerc --cov-report term --cov-report html:coverage --junit-xml=junit.xml --rootdir=. ./tests"
     volumes:
       - .:/app
+      - /app/.venv
     depends_on:
-      - db-testing
+      - db_testing

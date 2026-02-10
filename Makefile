@@ -30,4 +30,7 @@ build-dev:
 run-dev:
 	docker run --rm -p 8000:8000 $(IMAGE_NAME):dev
 
-.PHONY: run-local install-local lint lint-fix setup build-dev run-dev
+dev:
+	@docker compose up --build app_dev
+
+.PHONY: run-local install-local lint lint-fix setup build-dev run-dev dev
